@@ -18,7 +18,21 @@
 # posts and users تم تقل كل واحد فيهم الى ملفه الخاص
 # http://127.0.0.1:8000 هو نفسه {{URL}} في postman في البيئة الافتراضية
 # لارسال ريكويست الخاص بي في براوسر الخاص بي fetch('http://localhost:8000/').then(res => res.josn()).then(console.log) الى السيرفر
-# حمل  git وادخل لل github
+# حمل  git وادخل لل github ثم اكتب الذي تحت على حدى
+# -----------------------------------------------------
+# اكتب هذا في terminal
+# git init
+# git add README.md
+# git commit -m "first commit"
+# git branch -M main
+# git remote add origin https://github.com/saleh562shoaib/example-fastapi.git
+# git push -u origin main
+# -----------------------------------------------------------
+
+# render ابحث عنه وحمله و اعرف كل شئ عنه لكي تحمل طبيقك على السيرفير وبعدها تعلم  ونشرهheroku
+# ولا تحميل ملفين . nginx , gunicorn.server
+
+# vw ubuntu عليك تعلمه لاحقا ومعرفة كل شئ عنه 
 
 
 # from fastapi import FastAPI #, Response, status, HTTPException,Depends 
@@ -300,7 +314,7 @@
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 # $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
-from fastapi import FastAPI 
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app import main
@@ -355,3 +369,15 @@ app.include_router(vote.router)
 @app.get("/")
 def root():
     return {"message":"Hello World"}
+
+
+
+    # return {"message":"Hello World!"} # في درس ال test_users.py يجب ان يكون الكود قبل اضافته  ان يكون على الشكل الذي تريده 
+
+
+
+
+
+
+
+

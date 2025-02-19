@@ -1,0 +1,199 @@
+; fastapi-prod
+; سنقو بدراسة كيف سنقوم بتحميل ubuntu server
+;لدخول الى التيرمينال الخاص ال ubuntu ووضع المفتاح المستعار الذي هو ip address
+;digitalocen في هذا البرنامج سنقوم بهذا
+;حسنا اكتب معي
+;-----------------------------------------
+;ssh root@ رقم IP ADDRESS
+;بعدها اكتب كلمة المرور الخاص بك
+;وهكذا ستدخل لسيرفر ال ubuntu الخاص بك وطبعا مع اسمه الخاص
+;ضع الامر التالي sudo apt update && sudo apt upgrade -y سيقوم بتحميل جميع الملفات اختر اول خيار
+;لتحميل اي شئ في ubuntu الامر هو sudo apt install ....الشئ المراد تحميله رمز 1
+;حمل python3-pip
+;سيصبح بدل apt > pip3 هكذا sudo pip3 install .... رمز 2
+;حمل virtualenv
+;1 postgresql postgresql-contrib -y
+;psql ابحث عنه في نفس مكانك
+;psql -U postgres
+;whoami 
+;sudo cat /etc/passwd
+;su - postgres يتغير الاسم من root > postgres
+;;psql -U postgres
+;\password postgres لوضع كلمة مرور جديدة
+;exit لرجوع من postgres > root
+; cd /etc/postgres/16/main + ls
+;سترى مجلد اسمه postgresql.conf
+;اكتب sudo vi postgresql.conf سيدخلك على قاعدة البينات الخاص بك
+; تحت كلام - connection Settings - listen_addresses = '*'
+;:wq
+; سترى ملف pg_hda.conf
+; sudo vi pg_hda.conf
+; الاول كلام غير بدل peer > md5 والثالث نفسه ضع  ,0.0.0.0/ والرابع ضع ::/0
+;:wq
+;systemctl restart postgresql
+;psql -U postgres
+; قم بوضع المفتاح في postgress عند صنع سيرفر جديد مكان الهوست و قم بكلمة مرور جديده
+; اضف يوسر جديد adduser + اسم
+; su - اسم
+; غير في مسار المفتاح بدل root > اسم الجديد(هذا بعد الرجوع الى المار الذي وضع فيه المفتاح) exit
+; ssh اسم@ ...
+; sudo apt upgrade
+; اذا اردت تغير شئ في اليوسر عليك تغير من (اسم) > (root)
+; حسنا غير usermod -aG sudo اسم
+; sudo apt upgrade
+; pwd
+; cd ~  او cd /اسم الملف
+; mkdir app --> cd app
+; virtualenv venv
+; source venv/bin/activate
+; deactivate للخروج من البيئة
+; mkdir src --> cd src
+; في الغيت هب الخاص بك ستجد مكان اسمه كود افتحه سترى كودك انسخه واكتبه 
+; git clon مسار الغيت هب
+; source venv/bin/activate
+; pip install requirements.txt
+; deactivate للخروج من البيئة
+; sudo apt install libpq-dev عليك تحميله في ملف الsrc نفسه
+; uvicorn app.main:app --reload
+; export MY_NAME=اسم
+; printenv
+; unset  MY_NAME
+; printenv
+; cd ~
+; touch .env
+; vi .env
+; سيظهر لك صفحة اكتب فيها  export MY_NAME=اسم
+; و export MY_PASSWORD=Admin
+; wq
+; source .env
+; printenv
+; unset MY_NAME
+; unset MY_PASSWORD
+; printenv
+; VI ,env
+; سيظهر لك صفحة اكتب فيها  export MY_NAME=اسم
+; و export MY_PASSWORD=Admin امسحهم وضع هذا
+; DATABASE_HOSTNAME=localhost
+; DATABASE_PORT=5432
+; DATABASE_PASSWORD=Admin
+; DATABASE_NAME=fastapi
+; DATABASE_USERNAME=postgres
+; SECRET_KEY=09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7
+; ALGORITHM=HS256
+; ACCESS_TOKEN_EXPIRE_MINUTES=30 @
+; wq
+; cat .env
+; set -o allexport; sourse /home/اسم/.env; set +o allexport
+; sudo reboot
+; printenv
+; vi .profile
+; set -o allexport; sourse /home/اسم/.env; set +o allexport اخر ضئ ضع
+; wq
+; printenv
+; exit 
+; printenv
+; sude reboot
+; printenv
+; vi .env
+; cd app\
+; source venv/bi/activate
+; في postgress لن ترى اي جدول
+;  cd srd/
+; alembic upgrade head
+; سترى ان الجداول عادوا مرة اخرى
+; cd app/ 
+; source venv/bin/activate
+; cd src
+; في قوقل لن يعمل uvicorn app.main:app --reload
+; غليك وضع هذا uvicorn --host 0.0.0.0 app.main:app هكذا سترى نفس تنسيقك من جديد
+; pip install gunicorn
+; pip install httptools
+; pip install uvloop
+; gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --bind 0.0.0.0:8000
+; ps -aef | grep -i gunicorn
+; ------------------------------------------------------------
+; cd /etc/systend/system/
+; في ملف ال gunicorn.server ستجد كتابات قم بالتعديل عليها واضف معلوماتك
+; sudo vi api.service  هو نفس المكان الذي وضعت فيه الذي فيه هذه العلامة @ 
+; systemctl start api
+; systemctl status api
+; cd ~
+; ls -la
+; في صفحة ال gunicorn.server ضع  EnvaronmentFile=/home/اسم/.env وضعه في @
+; system restart api.service
+; systemctl status api
+; sudo systemctl enable api
+; ----------------------------------------------------------
+; sudo api install nginx -y
+; systemctl start nginx
+; cd /etc/nginx/stites-available/
+; cat default 
+; ادخل لملف nginx
+; sudo vi default
+; في مكان اسمه location احذف  سطور بلون الموحد واكتب 
+; اكتب هذا server {
+;         listen 80 default_server;
+;         listen [::]:80 default_server;
+
+;         server_name _; # replace with specific domain name like sanjeev.com
+        
+;         location / {
+;                 proxy_pass http://localhost:8000;
+;                 proxy_http_version 1.1;
+;                 proxy_set_header X-Real-IP $remote_addr;
+;                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+;                 proxy_set_header Upgrade $http_upgrade;
+;                 proxy_set_header Connection 'upgrade';
+;                 proxy_set_header Host $http_host;
+;                 proxy_set_header X-NginX-Proxy true;
+;                 proxy_redirect off;
+;         }
+
+; }
+; systemctl restart nginx
+; name cheap تصفحه لانشاء الدومين
+; certbot تصفحه
+; sudo snap install --classic certbot
+; sudo cdertbot --nginx
+; systemctl status nginx
+; sudo ufw status
+; sudo ufw allow http
+; sudo ufw allow https
+; sudo ufw allow ssh
+; sudo ufw allow 5432
+; sudo ufw enable
+; sudo ufw status
+; شغل التطبيق في غوغل
+; sudo ufw delete allow + اي شئ 
+# return {"message":"Hello World !!!!"} غير فيها قليلا باي شئ
+; ------------------------------
+; في التيرمينال هنا اكتب 
+; git add --all
+; git commit -m "changed the world"
+; git push origin main
+; -----------------------------------
+; cd ~
+; cd app/src
+; git pull
+; sudo systemctl restart api
+; افتح قوقل لتطبيقك لترى التغيير
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

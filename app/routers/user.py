@@ -9,6 +9,8 @@ router = APIRouter(
     tags=['Users']  # يجعل الهذا الملف في مجموعته الخاصة في google fastapi
 )
 
+#/users/
+#/users
 # (7) عبارة عن جدول جديد صفحة جديدة كل شئ جديد غير جدول البوستس
 # @router.post("/users", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)1
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.UserOut)
